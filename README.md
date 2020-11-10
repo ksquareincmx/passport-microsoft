@@ -1,5 +1,7 @@
 # Passport-microsoft
 
+This is a fork of the original work by @seanfisher, with changes by @rachaelsingleton to support the 'prompt' parameter that allows selecting the kind of prompt we want to show to the user on the Microsoft SSO.
+
 [Passport](https://github.com/jaredhanson/passport) strategy for authenticating
 with [Microsoft Graph](https://graph.microsoft.io/) using the OAuth 2.0 API.
 
@@ -10,15 +12,15 @@ middleware, including [Express](http://expressjs.com/).
 
 ## Install
 
-Install via [npm](https://www.npmjs.com/package/passport-microsoft)
+Install via [npm](https://www.npmjs.com/package/@the-ksquare-group/passport-microsoft)
 
-    $ npm install passport-microsoft
+    $ npm install @the-ksquare-group/passport-microsoft
 
 ## Usage
 
 #### Configure Strategy
 
-The microsoft authentication strategy authenticates users using a microsoft account and OAuth 2.0 tokens.  The strategy requires a `verify` callback, which
+The microsoft authentication strategy authenticates users using a microsoft account and OAuth 2.0 tokens. The strategy requires a `verify` callback, which
 accepts these credentials and calls `done` providing a user, as well as
 `options` specifying a client ID, client secret, and callback URL.
 
@@ -26,19 +28,22 @@ The consumer key and secret are obtained by [creating an application](https://ap
 Microsoft's developer site.
 
 ```js
-    var MicrosoftStrategy = require('passport-microsoft').Strategy;
-    passport.use(new MicrosoftStrategy({
-        clientID: 'applicationidfrommicrosoft',
-        clientSecret: 'applicationsecretfrommicrosoft',
-        callbackURL: "http://localhost:3000/auth/microsoft/callback",
-        scope: ['user.read']
-      },
-      function(accessToken, refreshToken, profile, done) {
-        User.findOrCreate({ userId: profile.id }, function (err, user) {
-          return done(err, user);
-        });
-      }
-    ));
+var MicrosoftStrategy = require("passport-microsoft").Strategy;
+passport.use(
+  new MicrosoftStrategy(
+    {
+      clientID: "applicationidfrommicrosoft",
+      clientSecret: "applicationsecretfrommicrosoft",
+      callbackURL: "http://localhost:3000/auth/microsoft/callback",
+      scope: ["user.read"],
+    },
+    function (accessToken, refreshToken, profile, done) {
+      User.findOrCreate({ userId: profile.id }, function (err, user) {
+        return done(err, user);
+      });
+    }
+  )
+);
 ```
 
 #### Authenticate Requests
@@ -50,32 +55,33 @@ For example, as route middleware in an [Express](http://expressjs.com/)
 application:
 
 ```js
-    app.get('/auth/microsoft',
-      passport.authenticate('microsoft'));
+app.get("/auth/microsoft", passport.authenticate("microsoft"));
 
-    app.get('/auth/microsoft/callback', 
-      passport.authenticate('microsoft', { failureRedirect: '/login' }),
-      function(req, res) {
-        // Successful authentication, redirect home.
-        res.redirect('/');
-      });
+app.get(
+  "/auth/microsoft/callback",
+  passport.authenticate("microsoft", { failureRedirect: "/login" }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("/");
+  }
+);
 ```
 
 ## Examples
 
-For a complete, working example, refer to the [login example](https://github.com/seanfisher/passport-microsoft/tree/master/example/login).
+For a complete, working example, refer to the [login example](https://github.com/ksquareincmx/passport-microsoft/tree/master/example/login).
 
 ## Credits
 
-  - [Sean Fisher](https://www.seafish.io) - [passport-microsoft on Github](https://github.com/seanfisher/passport-microsoft)
-  - [Sluggy Bear](http://github.com/slugbay) - Original [Microsoft OneDrive](https://github.com/slugbay/passport-onedrive) strategy, upon which this is based
+- [Sean Fisher](https://www.seafish.io) - [passport-microsoft on Github](https://github.com/seanfisher/passport-microsoft)
+- [Sluggy Bear](http://github.com/slugbay) - Original [Microsoft OneDrive](https://github.com/slugbay/passport-onedrive) strategy, upon which this is based
 
-  Copyright (c) 2020 Sean Fisher <[seafish.io](https://www.seafish.io)>
+Copyright (c) 2020 Sean Fisher <[seafish.io](https://www.seafish.io)>
 
 ## Thanks
 
-  - [Jared Hanson](http://github.com/jaredhanson)
+- [Jared Hanson](http://github.com/jaredhanson)
 
 ## License
 
-  - [The MIT License](http://opensource.org/licenses/MIT)
+- [The MIT License](http://opensource.org/licenses/MIT)

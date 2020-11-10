@@ -1,5 +1,5 @@
 {
-  "name": "passport-microsoft",
+  "name": "@the-ksquare-group/passport-microsoft",
   "version": "0.1.1",
   "description": "Microsoft [Graph] authentication strategy for Passport.",
   "keywords": [
